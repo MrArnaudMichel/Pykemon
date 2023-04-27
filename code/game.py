@@ -146,6 +146,8 @@ class Game:
         if self.followEntity and filename.split("_")[0] == "map":
             self.followEntityUpdatePos()
             self.group.add(self.followEntity)
+            self.group.change_layer(self.followEntity, 6)
+
         self.collisions = []
         self.smoke_list = []
         self.switchs = {}
@@ -202,7 +204,7 @@ class Game:
             if self.player.swim is True and self.player.anim_swim_bool is False:
                 self.group.remove(self.followEntity)
         else:
-            if self.player.swim is False and self.player.anim_swim_bool is False:
+            if self.player.swim is False and self.player.anim_swim_bool is False and self.map.split("_")[0] == "map":
                 self.followEntityUpdatePos()
                 self.group.add(self.followEntity)
 
@@ -270,7 +272,7 @@ class Game:
                     self.save.activate = True
                     self.save.run(self.keylistener, self.map, self.current_map, self.player, [], self.pokedex, self.dt)
                     if self.save.activate is False:
-                        self.pause.list_info = save.load_list(self.player.name + "0")
+                        self.pause.list_info = save.load_list(self.player.name + "'s Save")
                         self.pause.save = False
                         self.save.choice.choice = None
 

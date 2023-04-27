@@ -54,7 +54,9 @@ This Project Does Not Have A License.
 If you have any questions, you can contact me at the following email address: <a> arnaudd.michel@gmail.com </a>
 
 ## Screenshots
-![Screenshot 1](unknown.png)
+![Screenshot 1](data/screenshot/view.png)
+![Screenshot 2](data/screenshot/save.png)
+![Screenshot 3](data/screenshot/item.png)
 
 ## Links
 - [Repository](https://github.com/MrArnaudMichel/Pykemon)

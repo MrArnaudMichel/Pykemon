@@ -37,7 +37,6 @@ class Save:
             self.dialog.talking = True
         self.dialog.draw(self.screen, 1)
         self.choice.run()
-        #if pygame.K_RETURN in keylistner.get() or pygame.K_SPACE in keylistner.get():
         if self.choice.choice == "Oui":
             self.save_info(map, currentmap, player, settings, pokedex)
             self.activate = False
@@ -49,5 +48,5 @@ class Save:
     def save_info(self, map, currentmap, player, settings, pokedex):
         map_info = {"map": map, "currentmap": currentmap, "playerRect": player.rect, "playerDirection": player.direction}
         player_info = {"name": player.name, "pokedex": pokedex, "pokemon": player.pokemon , "timeplayed": player.timeplayed, "pokedollars": player.pokedollars, "badges": player.badges, "gender": player.gender}
-        list_save = [player.name+"0", len(pokedex.pokemon_seen), currentmap, player.timeplayed, datetime.datetime.now().strftime("%d/%m/%Y"), player.pokedollars, player.badges, map_info, player_info, settings]
+        list_save = [player.name+"'s Save", len(pokedex.pokemon_seen), currentmap, player.timeplayed, datetime.datetime.now().strftime("%d/%m/%Y"), player.pokedollars, player.badges, map_info, player_info, settings]
         save_list(list_save, list_save[0])
