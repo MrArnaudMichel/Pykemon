@@ -11,13 +11,7 @@
 - [Questions](#questions)
 - [Screenshots](#screenshots)
 - [Links](#links)
-- [Tests](#tests)
-- [Badges](#badges)
 - [Features](#features)
-- [How to Contribute](#how-to-contribute)
-- [Tests](#tests)
-- [FAQs](#faqs)
-- [Support](#support)
 - [Donations](#donations)
 
 ---
@@ -63,4 +57,45 @@ If you have any questions, you can contact me at the following email address: <a
 ![Screenshot 1](unknown.png)
 
 ## Links
-- [Repository](
+- [Repository](https://github.com/MrArnaudMichel/Pykemon)
+- [MyGithub](https://github.com/MrArnaudMichel)
+<!-- - [MyWebsite](https://mrarnaudmichel.github.io/) -->
+
+## Features
+- [x] Player
+  - [x] Movement
+  - [x] Interaction
+  - [x] Inventory
+  - [x] Pokédex
+- [x] Pokémon
+- [x] Items
+- [x] Map
+  - [x] Tileset
+  - [x] Collisions
+  - [x] Layers
+  - [x] Teleportation
+  - [x] Events
+  - [x] Music
+  - [x] Day/Night Cycle
+  - [x] Time
+- [x] Menu
+- [x] Save
+- [ ] Options
+- [x] Credits
+- [ ] Title Screen
+- [ ] Storyline
+- [ ] Battle
+- [x] Pokémons
+- [ ] CS
+  - [ ] Cut
+  - [ ] Fly
+  - [x] Surf
+  - [ ] Strength
+  - [ ] Flash
+  - [ ] Rock Smash
+
+## Donations
+If you want to support me, you can donate with the following link: [PayPal](https://paypal.me/arnaud134)
+
+---
+© 2023 Arnaud Michel. All Rights Reserved.
