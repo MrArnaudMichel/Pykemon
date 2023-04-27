@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="11" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="24">
+ <tileset firstgid="1" source="tileset/interieur1.tsx"/>
+ <tileset firstgid="4625" source="tileset/tileset4g.tsx"/>
+ <layer id="1" name="Calque de Tuiles 1" width="11" height="10">
+  <data encoding="csv">
+19,19,19,19,19,19,19,19,17,17,17,
+19,19,19,19,19,19,19,19,19,19,19,
+17,17,17,17,17,19,19,17,17,17,17,
+19,19,19,19,19,19,19,26,19,19,19,
+19,19,19,18,19,19,19,19,19,19,19,
+17,25,25,26,19,19,19,19,19,19,19,
+17,19,19,19,19,19,19,19,19,19,19,
+17,19,17,17,19,19,19,19,19,19,19,
+17,19,17,17,19,19,19,19,19,19,19,
+17,19,19,19,19,19,19,19,19,19,19
+</data>
+ </layer>
+ <layer id="2" name="Calque de Tuiles 2" width="11" height="10">
+  <data encoding="csv">
+34,35,35,35,35,35,35,35,35,35,0,
+42,43,43,43,43,43,43,43,43,43,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,49,50,50,51,0,0,
+0,226,129,130,0,57,58,58,59,0,0,
+0,0,137,138,0,65,66,66,67,0,0,
+217,0,0,0,73,74,0,0,0,0,217
+</data>
+ </layer>
+ <layer id="3" name="Calque de Tuiles 3" width="11" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,77,78,0,36,
+0,0,0,0,182,0,0,85,86,98,44,
+0,0,0,0,190,34,36,93,94,106,0,
+0,0,0,0,0,42,44,0,0,0,0,
+156,157,158,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,230,230,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="Calque de Tuiles 4" width="11" height="10">
+  <data encoding="csv">
+0,0,0,0,0,72,72,0,0,0,0,
+180,181,0,0,0,72,72,0,0,0,0,
+188,189,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,193,194,0,0,0,0,
+0,0,0,0,0,201,202,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Calque de Tuiles 5" width="11" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="8" name="player" width="11" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="9" name="Calque de Tuiles 8" width="11" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="Calque de Tuiles 6" width="11" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+148,149,150,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,121,122,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+209,0,0,0,0,0,0,0,0,0,209,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="7" name="object">
+  <object id="2" type="collision" x="0" y="144" width="16" height="16"/>
+  <object id="3" type="collision" x="160" y="144" width="16" height="16"/>
+  <object id="4" type="collision" x="0" y="64" width="48" height="16"/>
+  <object id="5" type="collision" x="0" y="32" width="32" height="16"/>
+  <object id="6" type="collision" x="32" y="16" width="32" height="16"/>
+  <object id="7" type="collision" x="64" y="32" width="16" height="16"/>
+  <object id="8" type="collision" x="80" y="48" width="32" height="32"/>
+  <object id="9" type="collision" x="112" y="32" width="16" height="16"/>
+  <object id="10" type="collision" x="144" y="16" width="32" height="14.7273"/>
+  <object id="11" name="Enter" x="64" y="112">
+   <point/>
+  </object>
+  <object id="12" name="map_0" type="switch" x="67.75" y="144.935" width="25" height="15.0652"/>
+  <object id="13" type="collision" x="-16" y="48" width="16" height="96"/>
+  <object id="14" type="collision" x="16" y="160" width="144" height="16"/>
+  <object id="15" type="collision" x="176" y="32" width="16" height="112"/>
+  <object id="17" name="inter_0" type="switch" x="120" y="16" width="16" height="32"/>
+  <object id="18" name="Enter_inter_0" x="144" y="16">
+   <point/>
+  </object>
+  <object id="19" type="collision" x="32" y="112" width="32" height="32"/>
+  <object id="21" name="maman_hgss quests [] 4" type="npc" x="89" y="97.3333">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
