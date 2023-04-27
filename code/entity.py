@@ -4,6 +4,7 @@ import datetime
 
 from keylistener import KeyListener
 from mixer import Mixer
+from inventory import Inventory
 
 
 class Entity(pygame.sprite.Sprite):
@@ -227,6 +228,7 @@ class Player(Entity):
         self.type = "player"
         self.pokemon = []
         self.pokedollars = 0
+        self.inventory = Inventory()
         self.badges = []
 
     def movefromkeylistener(self, keylistener: KeyListener, collisions: list[pygame.Rect],

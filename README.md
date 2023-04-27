@@ -54,14 +54,14 @@ This Project Does Not Have A License.
 If you have any questions, you can contact me at the following email address: <a> arnaudd.michel@gmail.com </a>
 
 ## Screenshots
-![Screenshot 1](data/screenshot/view.png)
-![Screenshot 2](data/screenshot/save.png)
-![Screenshot 3](data/screenshot/item.png)
+![Screenshot 1](https://media.discordapp.net/attachments/820340493774356493/1101275013216227418/item.png?width=1170&height=658)
+![Screenshot 2](https://media.discordapp.net/attachments/820340493774356493/1101275013719535737/save.png?width=1170&height=658)
+![Screenshot 3](https://media.discordapp.net/attachments/820340493774356493/1101275014017318953/view.png?width=1170&height=658)
 
 ## Links
 - [Repository](https://github.com/MrArnaudMichel/Pykemon)
 - [MyGithub](https://github.com/MrArnaudMichel)
-<!-- - [MyWebsite](https://mrarnaudmichel.github.io/) -->
+- [MyWebsite](https://mrarnaudmichel.github.io/)
 
 ## Features
 - [x] Player

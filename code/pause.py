@@ -195,11 +195,11 @@ class Pause:
         self.screen.blit(surface, (self.screen.get_width() / 2 - self.screen.get_width() / 6,
                                    self.screen.get_height() / 4 - 24))
 
-        text, pos = dialog.setText(self.list_info[0], self.screen.get_width() / 2, self.screen.get_height() / 4 + 8, 32,
-                                   (255, 255, 255), "center", font="Roboto-Light")
-        self.screen.blit(text, pos)
-
         if os.listdir("../data/save"):
+            text, pos = dialog.setText(self.list_info[0], self.screen.get_width() / 2, self.screen.get_height() / 4 + 8,
+                                       32,
+                                       (255, 255, 255), "center", font="Roboto-Light")
+            self.screen.blit(text, pos)
             for i in range(1, 7):
                 self.screen.blit(self.cardUnselected, (self.screen.get_width() / 2 - self.screen.get_width() / 6,
                                                        self.screen.get_height() / 2 - self.screen.get_height() / 12 + (
@@ -244,6 +244,10 @@ class Pause:
                     self.screen.blit(self.aurore, (self.screen.get_width() / 16,
                                                    self.screen.get_height() - self.aurore.get_height()))
         else:
+            text, pos = dialog.setText("Sauvegarde", self.screen.get_width() / 2, self.screen.get_height() / 4 + 8,
+                                       32,
+                                       (255, 255, 255), "center", font="Roboto-Light")
+            self.screen.blit(text, pos)
             surface = pygame.Surface((self.screen.get_width() / 3, self.screen.get_height() / 3.5))
             surface.fill((1, 47, 43))
             self.screen.blit(surface, (self.screen.get_width() / 2 - self.screen.get_width() / 6,

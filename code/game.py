@@ -77,6 +77,7 @@ class Game:
             self.player.timeplayed = saveinfo[8]["timeplayed"]
             self.player.badges = saveinfo[8]["badges"]
             self.player.direction = saveinfo[7]["playerDirection"]
+            self.player.inventory = saveinfo[8]["inventory"]
             self.load_map(self.map, (saveinfo[7]["playerRect"].x, saveinfo[7]["playerRect"].y))
             self.pause = Pause(self.screen, self.player)
             self.pokedex = saveinfo[8]["pokedex"]

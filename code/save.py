@@ -47,6 +47,6 @@ class Save:
 
     def save_info(self, map, currentmap, player, settings, pokedex):
         map_info = {"map": map, "currentmap": currentmap, "playerRect": player.rect, "playerDirection": player.direction}
-        player_info = {"name": player.name, "pokedex": pokedex, "pokemon": player.pokemon , "timeplayed": player.timeplayed, "pokedollars": player.pokedollars, "badges": player.badges, "gender": player.gender}
+        player_info = {"name": player.name, "pokedex": pokedex, "pokemon": player.pokemon , "timeplayed": player.timeplayed, "pokedollars": player.pokedollars, "badges": player.badges, "gender": player.gender, "inventory": player.inventory}
         list_save = [player.name+"'s Save", len(pokedex.pokemon_seen), currentmap, player.timeplayed, datetime.datetime.now().strftime("%d/%m/%Y"), player.pokedollars, player.badges, map_info, player_info, settings]
         save_list(list_save, list_save[0])
