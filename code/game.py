@@ -7,8 +7,10 @@ import pathlib
 import datetime
 import save
 import os
+import json
+import random
 
-from entity import Entity, Player
+from entity import Entity, Player, NPC, WildPoke
 from keylistener import KeyListener
 from smoke import Smoke
 from introduction import Introduction
@@ -22,6 +24,7 @@ from dialog import Dialog
 from night import Night
 from inventory import Inventory
 from item import Item
+from wild import Wild
 
 
 class Game:
@@ -44,6 +47,7 @@ class Game:
         self.pokedex: Pokedex | None = None
         self.dialog: Dialog | None = None
         self.night: Night | None = Night(self.screen)
+        self.wild: Wild | None = Wild()
 
         self.map_layer: pyscroll.orthographic.BufferedRenderer | None = None
         self.tmx_data: pytmx.pytmx.TiledMap | None = None
@@ -57,6 +61,7 @@ class Game:
         self.smoke: list[(float, float)] | None = None
         self.swimcollision: list[pygame.Rect] | None = None
         self.objects: dict[str, pygame.Rect] | None = None
+        self.wildzone: list[pygame.Rect] | None = None
 
         self.followEntity: Entity | None = Entity(124, 128, "716_0")
 
@@ -156,6 +161,7 @@ class Game:
         self.switchs = {}
         self.swimcollision = []
         self.objects = {}
+        self.wildzone = []
 
         for obj in self.tmx_data.objects:
             if obj.type == 'collision':
@@ -168,6 +174,17 @@ class Game:
                 self.swimcollision.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
             elif obj.type == 'pokeball':
                 self.objects[obj.name] = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+            elif obj.type == 'wild_fight':
+                self.wildzone.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+
+        listepoke = self.wild.run(self.map, self.wildzone)
+        if listepoke:
+            for tuple in listepoke:
+                nb = random.randint(0, len(self.wildzone) - 1)
+                x = self.wildzone[nb].x + random.randint(0, int((self.wildzone[nb].width / 16) - 1) * 16) - 16
+                y = self.wildzone[nb].y + random.randint(0, int((self.wildzone[nb].height / 16) - 1) * 16) - 16
+                if not self.player.hitbox.colliderect(pygame.Rect(x, y, 32, 32)):
+                    self.group.add(self.setPoke(tuple[0], tuple[1], (x, y)))
 
         self.smoke = Smoke(self.screen, self.smoke_list, self.map_layer.zoom)
 
@@ -177,6 +194,12 @@ class Game:
     def setitem(self, name):
         item_line = self.sql.select_where("item", "name", name)[0]
         self.player.inventory.addItem(Item(item_line[1], item_line[2], item_line[4], item_line[3]))
+
+    def setPoke(self, name: str, level: int, wildPoke: bool | tuple = False):
+        if wildPoke:
+            return WildPoke(wildPoke[0], wildPoke[1], json.loads(open(f"../data/json/pokemon/{name}.json").read()), level, self.wildzone)
+        else:
+            return Poke(json.loads(open(f"../data/json/pokemon/{name}.json").read()), level)
 
     def followEntityUpdatePos(self):
         self.followEntity.step = 0

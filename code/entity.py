@@ -1,10 +1,13 @@
 import pygame
 import copy
 import datetime
+import time
+import random
 
 from keylistener import KeyListener
 from mixer import Mixer
 from inventory import Inventory
+from pokemon import Pokemon
 
 
 class Entity(pygame.sprite.Sprite):
@@ -355,3 +358,53 @@ class Player(Entity):
             elif followentity.hitbox.x > self.hitbox.x:
                 followentity.move("left", collisions, dt)
         return grouphigher
+
+class NPC(Entity):
+    def __init__(self, x, y, name):
+        super().__init__(x, y, name)
+
+class WildPoke(Pokemon, Entity):
+    def __init__(self, x, y, data, level: int, area: list[pygame.Rect]):
+        Pokemon.__init__(self, data, level)
+        gender = self.gender
+        self.grp = None
+        if self.shiny:
+            name = str(self.resources["characterShiny"])
+        else:
+            name = str(self.resources["character"])
+        Entity.__init__(self, x, y, name)
+        self.area = area
+        self.gender = gender
+        self.choice = ["up", "down", "left", "right"]
+        self.direction = random.choice(self.choice)
+        self.time = time.time()
+        self.cooldown = random.randint(1, 3)
+        self.updateRect(True)
+
+    def update(self, dt):
+        super().update(dt)
+        if time.time() - self.time > self.cooldown:
+            self.time = time.time()
+            self.cooldown = random.randint(1, 3)
+            self.direction = random.choice(self.choice)
+            if self.direction == "up":
+                rect = copy.copy(self.hitbox)
+                rect.y -= 16
+                if rect.collidelist(self.area) >= 0:
+                    self.move("up", [], dt)
+            elif self.direction == "down":
+                rect = copy.copy(self.hitbox)
+                rect.y += 16
+                if rect.collidelist(self.area) >= 0:
+                    self.move("down", [], dt)
+            elif self.direction == "left":
+                rect = copy.copy(self.hitbox)
+                rect.x -= 16
+                if rect.collidelist(self.area) >= 0:
+                    self.move("left", [], dt)
+            elif self.direction == "right":
+                rect = copy.copy(self.hitbox)
+                rect.x += 16
+                if rect.collidelist(self.area) >= 0:
+                    self.move("right", [], dt)
+
