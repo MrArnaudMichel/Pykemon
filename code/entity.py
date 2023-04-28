@@ -228,7 +228,7 @@ class Player(Entity):
         self.type = "player"
         self.pokemon = []
         self.pokedollars = 0
-        self.inventory = Inventory()
+        self.inventory: Inventory = Inventory()
         self.badges = []
 
     def movefromkeylistener(self, keylistener: KeyListener, collisions: list[pygame.Rect],

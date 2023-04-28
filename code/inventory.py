@@ -9,16 +9,20 @@ class Inventory:
         return [item for item in self.items if item.get_type() == type]
 
     def addItem(self, item: Item, quantity: int = 1):
-        if item in self.items:
-            self.items[item] += quantity
-        else:
-            self.items[item] = quantity
+        for key in self.items.keys():
+            if key.name == item.name:
+                self.items[key] += quantity
+                return
+        self.items[item] = quantity
+
 
     def removeItem(self, item: Item, quantity: int = 1):
-        if item in self.items:
-            self.items[item] -= quantity
-            if self.items[item] <= 0:
-                del self.items[item]
+        for key in self.items.keys():
+            if key.name == item.name:
+                self.items[key] -= quantity
+                if self.items[key] <= 0:
+                    self.items.pop(key)
+                return
 
     def __str__(self):
         return "\n".join([f"{item} ({quantity})" for item, quantity in self.items.items()])

@@ -20,6 +20,8 @@ from pokedex import Pokedex
 from home import Home
 from dialog import Dialog
 from night import Night
+from inventory import Inventory
+from item import Item
 
 
 class Game:
@@ -56,7 +58,7 @@ class Game:
         self.swimcollision: list[pygame.Rect] | None = None
         self.objects: dict[str, pygame.Rect] | None = None
 
-        self.followEntity: Entity | None = Entity(124, 128, "006_0")
+        self.followEntity: Entity | None = Entity(124, 128, "716_0")
 
         self.set_adventure()
 
@@ -172,6 +174,10 @@ class Game:
     def setdialaog(self, text):
         self.dialog = Dialog(text)
 
+    def setitem(self, name):
+        item_line = self.sql.select_where("item", "name", name)[0]
+        self.player.inventory.addItem(Item(item_line[1], item_line[2], item_line[4], item_line[3]))
+
     def followEntityUpdatePos(self):
         self.followEntity.step = 0
         self.followEntity.rect.x, self.followEntity.rect.y = copy.copy(
@@ -186,7 +192,7 @@ class Game:
                 #for objects in layer:
                 #    if objects.name == object:
                 #        layer.remove_object(objects)
-                self.objects.pop(object)
+                self.setitem(object)
                 if "find_item" in self.mixer.sounds:
                     self.mixer.sounds["find_item"].play()
                 else:
@@ -229,7 +235,7 @@ class Game:
                     self.draw_word_image = not self.draw_word_image
                 elif event.key == pygame.K_e and self.introduction is None and (self.dialog is None or self.dialog.talking is False):
                     self.interact()
-                elif event.key == pygame.K_SPACE and self.introduction is None and self.dialog is not None:
+                elif event.key == pygame.K_SPACE and self.introduction is None and self.dialog is not None and self.dialog.enddraw is True:
                     if self.dialog.talking is True:
                         self.dialog.next_text()
                 else:
