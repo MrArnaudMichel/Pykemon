@@ -380,31 +380,35 @@ class WildPoke(Pokemon, Entity):
         self.time = time.time()
         self.cooldown = random.randint(1, 3)
         self.updateRect(True)
+        self.walk = random.randint(0, 5)
 
     def update(self, dt):
         super().update(dt)
-        if time.time() - self.time > self.cooldown:
-            self.time = time.time()
-            self.cooldown = random.randint(1, 3)
-            self.direction = random.choice(self.choice)
+        if time.time() - self.time > self.cooldown or self.walk >= 0:
+            if self.walk == -1:
+                self.time = time.time()
+                self.cooldown = random.randint(0, 5)
+                self.direction = random.choice(self.choice)
+                self.walk = random.randint(0, 3)
             if self.direction == "up":
                 rect = copy.copy(self.hitbox)
-                rect.y -= 16
-                if rect.collidelist(self.area) >= 0:
+                rect.y -= (self.walk + 1) * 16
+                if rect.collidelist(self.area) > 0:
                     self.move("up", [], dt)
             elif self.direction == "down":
                 rect = copy.copy(self.hitbox)
-                rect.y += 16
-                if rect.collidelist(self.area) >= 0:
+                rect.y += (self.walk + 1) * 16
+                if rect.collidelist(self.area) > 0:
                     self.move("down", [], dt)
             elif self.direction == "left":
                 rect = copy.copy(self.hitbox)
-                rect.x -= 16
-                if rect.collidelist(self.area) >= 0:
+                rect.x -= (self.walk + 1) * 16
+                if rect.collidelist(self.area) > 0:
                     self.move("left", [], dt)
             elif self.direction == "right":
                 rect = copy.copy(self.hitbox)
-                rect.x += 16
-                if rect.collidelist(self.area) >= 0:
+                rect.x += (self.walk + 1) * 16
+                if rect.collidelist(self.area) > 0:
                     self.move("right", [], dt)
+            self.walk -= 1
 

@@ -63,7 +63,7 @@ class Game:
         self.objects: dict[str, pygame.Rect] | None = None
         self.wildzone: list[pygame.Rect] | None = None
 
-        self.followEntity: Entity | None = Entity(124, 128, "716_0")
+        self.followEntity: Entity | None = Entity(124, 128, "064_0")
 
         self.set_adventure()
 
@@ -180,11 +180,17 @@ class Game:
         listepoke = self.wild.run(self.map, self.wildzone)
         if listepoke:
             for tuple in listepoke:
-                nb = random.randint(0, len(self.wildzone) - 1)
-                x = self.wildzone[nb].x + random.randint(0, int((self.wildzone[nb].width / 16) - 1) * 16) - 16
-                y = self.wildzone[nb].y + random.randint(0, int((self.wildzone[nb].height / 16) - 1) * 16) - 16
+                nb = random.randint(0, len(self.wildzone) - 2)
+                if self.wildzone[nb].width > 32 and self.wildzone[nb].height > 32:
+                    x = random.randint(self.wildzone[nb].x, self.wildzone[nb].x + self.wildzone[nb].width - 16)
+                    y = random.randint(self.wildzone[nb].y, self.wildzone[nb].y + self.wildzone[nb].height - 16) - 16
+                else:
+                    x = self.wildzone[nb].x
+                    y = self.wildzone[nb].y - 16
                 if not self.player.hitbox.colliderect(pygame.Rect(x, y, 32, 32)):
-                    self.group.add(self.setPoke(tuple[0], tuple[1], (x, y)))
+                    poke = self.setPoke(tuple[0], tuple[1], (x, y))
+                    if poke.hitbox.collidelist(self.wildzone):
+                        self.group.add(poke)
 
         self.smoke = Smoke(self.screen, self.smoke_list, self.map_layer.zoom)
 
