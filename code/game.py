@@ -48,6 +48,7 @@ class Game:
         self.dialog: Dialog | None = None
         self.night: Night | None = Night(self.screen)
         self.wild: Wild | None = Wild()
+        self.home: Home | None = Home(self.screen)
 
         self.map_layer: pyscroll.orthographic.BufferedRenderer | None = None
         self.tmx_data: pytmx.pytmx.TiledMap | None = None
@@ -65,12 +66,13 @@ class Game:
 
         self.followEntity: Entity | None = Entity(124, 128, "064_0")
 
-        self.set_adventure()
-
         self.draw_word_image: bool = False
         self.word_image: pygame.Surface = pygame.image.load("../data/image/display/Word.png")
 
         self.drawgame: bool = True
+
+        self.mixer.load_music("rosa_title", False)
+        self.mixer.play_music(True)
 
     def set_adventure(self):
         if os.listdir("../data/save/"):
@@ -281,36 +283,41 @@ class Game:
             if self.player:
                 self.player.timeplayed += datetime.timedelta(seconds=self.dt)
             self.event()
-            if self.drawgame:
-                if self.introduction is None:
-                    self.update()
-                    self.group.center(self.player.rect.center)
-                    self.group.draw(self.screen)
-                    if self.smoke:
-                        self.smoke.draw(self.map_layer.get_center_offset())
-                    self.night.run()
+            if not self.home.activate:
+                if self.drawgame:
+                    if self.introduction is None:
+                        self.update()
+                        self.group.center(self.player.rect.center)
+                        self.group.draw(self.screen)
+                        if self.smoke:
+                            self.smoke.draw(self.map_layer.get_center_offset())
+                        self.night.run()
+                    else:
+                        self.introduction.draw(self.keylistener)
+                        if self.introduction.active is False:
+                            self.player = Player(-4, 256, self.introduction.name_pseudo,
+                                                 self.introduction.gender_choice.lower())
+                            self.current_map = "map_0"
+                            self.map = "inter_0"
+                            self.load_map("inter_0", 0)
+                            self.mixer.load_music(self.sql.select_where("map", "name", self.current_map)[0][0], True)
+                            self.mixer.play_music(True)
+                            self.introduction = None
+                            self.pause = Pause(self.screen, self.player)
+                            self.pokedex = Pokedex()
                 else:
-                    self.introduction.draw(self.keylistener)
-                    if self.introduction.active is False:
-                        self.player = Player(-4, 256, self.introduction.name_pseudo,
-                                             self.introduction.gender_choice.lower())
-                        self.current_map = "map_0"
-                        self.map = "inter_0"
-                        self.load_map("inter_0", 0)
-                        self.mixer.load_music(self.sql.select_where("map", "name", self.current_map)[0][0], True)
-                        self.mixer.play_music(True)
-                        self.introduction = None
-                        self.pause = Pause(self.screen, self.player)
-                        self.pokedex = Pokedex()
+                    self.pause.run(self.click, self.keylistener, self.current_map)
+                    if self.pause.save:
+                        self.save.activate = True
+                        self.save.run(self.keylistener, self.map, self.current_map, self.player, [], self.pokedex, self.dt)
+                        if self.save.activate is False:
+                            self.pause.list_info = save.load_list(self.player.name + "'s Save")
+                            self.pause.save = False
+                            self.save.choice.choice = None
             else:
-                self.pause.run(self.click, self.keylistener, self.current_map)
-                if self.pause.save:
-                    self.save.activate = True
-                    self.save.run(self.keylistener, self.map, self.current_map, self.player, [], self.pokedex, self.dt)
-                    if self.save.activate is False:
-                        self.pause.list_info = save.load_list(self.player.name + "'s Save")
-                        self.pause.save = False
-                        self.save.choice.choice = None
+                self.home.run()
+                if self.home.activate is False:
+                    self.set_adventure()
 
             # pygame.draw.rect(self.screen, (255, 0, 0), ((self.player.hitbox.x + self.map_layer.get_center_offset()[0]) * self.map_layer.zoom,
             #                                           (self.player.hitbox.y + self.map_layer.get_center_offset()[1]) * self.map_layer.zoom,

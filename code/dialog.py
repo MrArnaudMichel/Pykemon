@@ -86,8 +86,8 @@ class Dialog:
     def __init__(self, text: str = "", player_name=None, npc_name: str = None):
         self.texts = split_text(text, player_name) if text != "" else None
         self.npc_name = npc_name
-        self.dialogue_box = pygame.image.load("../data/dialog/Dialog_Box.png")
-        self.box_npc_name = pygame.transform.scale_by(pygame.image.load("../data/dialog/name_speaker.png"), 2)
+        self.dialogue_box = pygame.image.load("../data/dialog/Dialog_Box.png").convert_alpha()
+        self.box_npc_name = pygame.transform.scale_by(pygame.image.load("../data/dialog/name_speaker.png").convert_alpha(), 2)
         self.font = pygame.font.Font("../data/dialog/Roboto-Regular.ttf", 28)
         self.talking = True
         self.line_index = 0

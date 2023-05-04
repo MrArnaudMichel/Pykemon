@@ -32,9 +32,9 @@ class Introduction:
                              npc_name="Professeur")
         self.timecooldown = time.time()
         self.active = True
-        self.sprite_boy = pygame.transform.scale_by(pygame.image.load("../data/image/settings/lucas.png"), 0.35)
+        self.sprite_boy = pygame.transform.scale_by(pygame.image.load("../data/image/settings/lucas.png").convert_alpha(), 0.35)
         self.sprite_boy.set_alpha(128)
-        self.sprite_girl = pygame.transform.scale_by(pygame.image.load("../data/image/settings/dawn.png"), 0.40)
+        self.sprite_girl = pygame.transform.scale_by(pygame.image.load("../data/image/settings/dawn.png").convert_alpha(), 0.40)
         self.sprite_girl.set_alpha(128)
         self.gender_choice = None
         self.choice = Choice(self.screen, "Lucas", "Aurore")
@@ -42,7 +42,7 @@ class Introduction:
         self.sprite_full = None
         self.x_sprite = 0
 
-        self.box_name = pygame.image.load("../data/image/settings/box_name.png")
+        self.box_name = pygame.image.load("../data/image/settings/box_name.png").convert_alpha()
         self.draw_dialog = True
 
         self.name_pseudo = None
@@ -50,6 +50,8 @@ class Introduction:
         self.name_pseudo_cooldown = None
 
         self.nuzlocke = False
+
+        #self.surface = pygame.image.load("../data/image/home/home.png")
 
     def draw(self, keylistener):
         self.screen.blit(self.surface, (0, 0))
@@ -114,8 +116,6 @@ class Introduction:
                               self.screen.get_height() / 2 - self.sprite_full.get_height() / 2 + 300))
             self.screen.blit(self.box_name, (self.screen.get_width() / 2 - self.box_name.get_width() / 2,
                                              self.screen.get_height() / 2 - self.box_name.get_height() / 4))
-            self.screen.blit(self.surface, (
-            0, self.screen.get_height() / 2 - self.box_name.get_height() / 4 + self.box_name.get_height()))
             text, pos = setText("Quel est votre nom ?", int(self.screen.get_width() / 2),
                                 self.screen.get_height() / 2 - self.box_name.get_height() / 4 + 64, 28, (106, 176, 126),
                                 center="center", font="Roboto-Light")

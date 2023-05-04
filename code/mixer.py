@@ -41,7 +41,11 @@ class Mixer:
         # Charger une musique
         if active:
             pygame.mixer.music.fadeout(500)
-        pygame.mixer.music.load(f"../data/sound/music/{file}.mp3")
+        try:
+            pygame.mixer.music.load(f"../data/sound/music/{file}.mp3")
+        except:
+            pygame.mixer.music.load(f"../data/sound/music/{file}.ogg")
+        self.current_music = file
 
     def play_music(self, loop=False):
         # Jouer la musique en cours
