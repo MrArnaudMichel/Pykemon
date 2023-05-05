@@ -1,10 +1,16 @@
-import pygame
 import time
 
+import PIL
+import PIL.Image
+import PIL.ImageDraw
+import PIL.ImageEnhance
+import PIL.ImageFont
+import pygame
+
+import pause
+from choice import Choice
 from dialog import Dialog
 from sql import SQL
-from keylistener import KeyListener
-from choice import Choice
 
 
 def setText(caracChain, x, y, size=25, color=(255, 255, 255), center="center", bold=False, font="Roboto-Regular"):
@@ -27,15 +33,28 @@ class Introduction:
         self.screen = screen
         self.surface = pygame.Surface((1920, 1080))
         self.surface.fill((0, 32, 38))
+        self.surfacespawn = pygame.Surface((1920, 1080))
+        self.surfacespawn.fill((0, 32, 38))
+        self.surfacespawn.convert_alpha()
+        self.surfacespawn.set_alpha(255)
         self.sql = SQL()
         self.dialog = Dialog(self.sql.select_where("dialog", "id", 0)[0][1], player_name="Arnaud",
                              npc_name="Professeur")
         self.timecooldown = time.time()
         self.active = True
-        self.sprite_boy = pygame.transform.scale_by(pygame.image.load("../data/image/settings/lucas.png").convert_alpha(), 0.35)
-        self.sprite_boy.set_alpha(128)
-        self.sprite_girl = pygame.transform.scale_by(pygame.image.load("../data/image/settings/dawn.png").convert_alpha(), 0.40)
-        self.sprite_girl.set_alpha(128)
+        self.brightnessboy = 0.5
+        self.sprite_boy_pil = PIL.Image.open("../data/image/settings/lucas.png")
+        self.brighness_boy = PIL.ImageEnhance.Brightness(self.sprite_boy_pil)
+        self.sprite_boy_pil = self.brighness_boy.enhance(0.5)
+        self.sprite_boy = pause.pilImgToPygameImg(self.sprite_boy_pil).copy().convert_alpha()
+        self.sprite_boy = pygame.transform.scale_by(self.sprite_boy, 0.35)
+
+        self.brightnessgirl = 0.5
+        self.sprite_girl_pil = PIL.Image.open("../data/image/settings/dawn.png")
+        self.brighness_girl = PIL.ImageEnhance.Brightness(self.sprite_girl_pil)
+        self.sprite_girl_pil = self.brighness_girl.enhance(0.5)
+        self.sprite_girl = pause.pilImgToPygameImg(self.sprite_girl_pil).copy().convert_alpha()
+        self.sprite_girl = pygame.transform.scale_by(self.sprite_girl, 0.4)
         self.gender_choice = None
         self.choice = Choice(self.screen, "Lucas", "Aurore")
 
@@ -51,7 +70,24 @@ class Introduction:
 
         self.nuzlocke = False
 
-        #self.surface = pygame.image.load("../data/image/home/home.png")
+        self.surface = pygame.image.load("../data/image/home/imagehome.png").convert_alpha()
+
+    def setlightness(self, perso, reset=False):
+        if perso == "aurore":
+            self.brightnessgirl += 0.02
+            self.sprite_girl_pil = self.brighness_girl.enhance(self.brightnessgirl)
+            self.sprite_girl = pause.pilImgToPygameImg(self.sprite_girl_pil).copy().convert_alpha()
+            self.sprite_girl = pygame.transform.scale_by(self.sprite_girl, 0.4)
+        elif perso == "lucas":
+            self.brightnessboy += 0.02
+            self.sprite_boy_pil = self.brighness_boy.enhance(self.brightnessboy)
+            self.sprite_boy = pause.pilImgToPygameImg(self.sprite_boy_pil).copy().convert_alpha()
+            self.sprite_boy = pygame.transform.scale_by(self.sprite_boy, 0.35)
+        if reset:
+            self.brightnessboy = 0.5
+            self.brightnessgirl = 0.5
+            self.setlightness("lucas")
+            self.setlightness("aurore")
 
     def draw(self, keylistener):
         self.screen.blit(self.surface, (0, 0))
@@ -70,15 +106,11 @@ class Introduction:
                 self.timecooldown = time.time()
         elif self.dialog.text_index == 1:
             if self.gender_choice.lower() == "lucas":
-                if self.sprite_boy.get_alpha() < 255:
-                    self.sprite_boy.set_alpha(self.sprite_boy.get_alpha() + 3)
-                    if self.sprite_boy.get_alpha() + 3 > 255:
-                        self.sprite_boy.set_alpha(255)
+                if self.brightnessboy < 1:
+                    self.setlightness("lucas")
             else:
-                if self.sprite_girl.get_alpha() < 255:
-                    self.sprite_girl.set_alpha(self.sprite_girl.get_alpha() + 3)
-                    if self.sprite_girl.get_alpha() + 3 > 255:
-                        self.sprite_girl.set_alpha(255)
+                if self.brightnessgirl < 1:
+                    self.setlightness("aurore")
             if not self.dialog.enddraw and not time.time() - self.timecooldown > 0.5:
                 self.choice.draw()
             else:
@@ -99,9 +131,8 @@ class Introduction:
                         self.name_pseudo = "Aurore" + "_" * 6
                         self.name_pseudo_index = 6
                 else:
+                    self.setlightness("luacs", True)
                     self.choice = Choice(self.screen, "Lucas", "Aurore")
-                    self.sprite_girl.set_alpha(128)
-                    self.sprite_boy.set_alpha(128)
                     self.dialog.text_index = -1
                     self.dialog.next_text()
                 self.timecooldown = time.time()
@@ -219,12 +250,16 @@ class Introduction:
                 self.dialog.next_text()
         if self.draw_dialog:
             self.dialog.draw(self.screen, 1, draw_npc_name=False)
-        if keylistener.key_pressed(
-                pygame.K_SPACE) and self.dialog.enddraw and time.time() - self.timecooldown > 0.5 \
+        if (keylistener.key_pressed(
+                pygame.K_SPACE) or pygame.mouse.get_pressed()[
+                0]) and self.dialog.enddraw and time.time() - self.timecooldown > 0.5 \
                 and self.choice.active is False:
             self.dialog.next_text()
         if self.dialog.talking is False:
             self.active = False
+        if self.surfacespawn.get_alpha() > 0:
+            self.surfacespawn.set_alpha(self.surfacespawn.get_alpha() - 2 * 1)
+            self.screen.blit(self.surfacespawn, (0, 0))
 
     def draw_sprite_gender(self):
         self.screen.blit(self.sprite_girl, (self.screen.get_width() / 4 - self.sprite_girl.get_width() / 2,

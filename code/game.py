@@ -1,29 +1,28 @@
 import copy
-import pygame
-import sys
-import pytmx
-import pyscroll
-import pathlib
 import datetime
-import save
-import os
 import json
+import os
 import random
+import sys
 
-from entity import Entity, Player, NPC, WildPoke
-from keylistener import KeyListener
-from smoke import Smoke
-from introduction import Introduction
-from mixer import Mixer
-from sql import SQL
-from pause import Pause
-from save import Save
-from pokedex import Pokedex
-from home import Home
+import pygame
+import pyscroll
+import pytmx
+
+import save
 from dialog import Dialog
-from night import Night
-from inventory import Inventory
+from entity import Entity, Player, WildPoke
+from home import Home
+from introduction import Introduction
 from item import Item
+from keylistener import KeyListener
+from mixer import Mixer
+from night import Night
+from pause import Pause
+from pokedex import Pokedex
+from save import Save
+from smoke import Smoke
+from sql import SQL
 from wild import Wild
 
 
@@ -64,7 +63,7 @@ class Game:
         self.objects: dict[str, pygame.Rect] | None = None
         self.wildzone: list[pygame.Rect] | None = None
 
-        self.followEntity: Entity | None = Entity(124, 128, "064_0")
+        self.followEntity: Entity | None = None
 
         self.draw_word_image: bool = False
         self.word_image: pygame.Surface = pygame.image.load("../data/image/display/Word.png")
@@ -205,22 +204,24 @@ class Game:
 
     def setPoke(self, name: str, level: int, wildPoke: bool | tuple = False):
         if wildPoke:
-            return WildPoke(wildPoke[0], wildPoke[1], json.loads(open(f"../data/json/pokemon/{name}.json").read()), level, self.wildzone)
+            return WildPoke(wildPoke[0], wildPoke[1], json.loads(open(f"../data/json/pokemon/{name}.json").read()),
+                            level, self.wildzone)
         else:
             return Poke(json.loads(open(f"../data/json/pokemon/{name}.json").read()), level)
 
     def followEntityUpdatePos(self):
-        self.followEntity.step = 0
-        self.followEntity.rect.x, self.followEntity.rect.y = copy.copy(
-            self.player.rect.x) - self.followEntity.rect.width / 2 + self.player.rect.width / 2, self.player.rect.y + 16
-        self.followEntity.updateRect(True)
+        if self.followEntity is not None:
+            self.followEntity.step = 0
+            self.followEntity.rect.x, self.followEntity.rect.y = copy.copy(
+                self.player.rect.x) - self.followEntity.rect.width / 2 + self.player.rect.width / 2, self.player.rect.y + 16
+            self.followEntity.updateRect(True)
 
     def interact(self):
         for object, rect in self.objects.items():
             if self.player.hitbox.colliderect(rect):
                 self.setdialaog("Vous avez obtenu une " + object + " !")
-                #layer: pytmx.pytmx.TiledTileLayer = self.tmx_data.get_layer_by_name("object")
-                #for objects in layer:
+                # layer: pytmx.pytmx.TiledTileLayer = self.tmx_data.get_layer_by_name("object")
+                # for objects in layer:
                 #    if objects.name == object:
                 #        layer.remove_object(objects)
                 self.setitem(object)
@@ -242,7 +243,8 @@ class Game:
             if self.player.swim is True and self.player.anim_swim_bool is False:
                 self.group.remove(self.followEntity)
         else:
-            if self.player.swim is False and self.player.anim_swim_bool is False and self.map.split("_")[0] == "map":
+            if self.player.swim is False and self.player.anim_swim_bool is False and self.map.split("_")[
+                0] == "map" and self.followEntity is not None:
                 self.followEntityUpdatePos()
                 self.group.add(self.followEntity)
 
@@ -264,7 +266,8 @@ class Game:
                     self.pause.update_font()
                 elif event.key == pygame.KSCAN_APOSTROPHE and self.introduction is None:
                     self.draw_word_image = not self.draw_word_image
-                elif event.key == pygame.K_e and self.introduction is None and (self.dialog is None or self.dialog.talking is False):
+                elif event.key == pygame.K_e and self.introduction is None and (
+                        self.dialog is None or self.dialog.talking is False):
                     self.interact()
                 elif event.key == pygame.K_SPACE and self.introduction is None and self.dialog is not None and self.dialog.enddraw is True:
                     if self.dialog.talking is True:
@@ -277,6 +280,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.click = pygame.mouse.get_pos()
+
     def run(self):
         while self.running:
             self.clock.tick(60)
@@ -309,7 +313,8 @@ class Game:
                     self.pause.run(self.click, self.keylistener, self.current_map)
                     if self.pause.save:
                         self.save.activate = True
-                        self.save.run(self.keylistener, self.map, self.current_map, self.player, [], self.pokedex, self.dt)
+                        self.save.run(self.keylistener, self.map, self.current_map, self.player, [], self.pokedex,
+                                      self.dt)
                         if self.save.activate is False:
                             self.pause.list_info = save.load_list(self.player.name + "'s Save")
                             self.pause.save = False

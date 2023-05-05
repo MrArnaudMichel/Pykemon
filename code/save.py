@@ -1,12 +1,12 @@
-import time
 import datetime
-import pygame
 import pickle
 
-import dialog
+import pygame
+
 from choice import Choice
 from dialog import Dialog
 from keylistener import KeyListener
+
 
 def save_list(lst, fic):
     # Ouvrir le fichier en mode écriture binaire
@@ -22,6 +22,7 @@ def load_list(fic):
     with open("../data/save/" + fic, "rb") as f:
         # Charger la liste depuis le fichier et la retourner
         return pickle.load(f)
+
 
 class Save:
     def __init__(self, screen: pygame.display):
@@ -46,7 +47,12 @@ class Save:
             self.dialog.letter_i = 0
 
     def save_info(self, map, currentmap, player, settings, pokedex):
-        map_info = {"map": map, "currentmap": currentmap, "playerRect": player.rect, "playerDirection": player.direction}
-        player_info = {"name": player.name, "pokedex": pokedex, "pokemon": player.pokemon , "timeplayed": player.timeplayed, "pokedollars": player.pokedollars, "badges": player.badges, "gender": player.gender, "inventory": player.inventory}
-        list_save = [player.name+"'s Save", len(pokedex.pokemon_seen), currentmap, player.timeplayed, datetime.datetime.now().strftime("%d/%m/%Y"), player.pokedollars, player.badges, map_info, player_info, settings]
+        map_info = {"map": map, "currentmap": currentmap, "playerRect": player.rect,
+                    "playerDirection": player.direction}
+        player_info = {"name": player.name, "pokedex": pokedex, "pokemon": player.pokemon,
+                       "timeplayed": player.timeplayed, "pokedollars": player.pokedollars, "badges": player.badges,
+                       "gender": player.gender, "inventory": player.inventory}
+        list_save = [player.name + "'s Save", len(pokedex.pokemon_seen), currentmap, player.timeplayed,
+                     datetime.datetime.now().strftime("%d/%m/%Y"), player.pokedollars, player.badges, map_info,
+                     player_info, settings]
         save_list(list_save, list_save[0])

@@ -87,7 +87,8 @@ class Dialog:
         self.texts = split_text(text, player_name) if text != "" else None
         self.npc_name = npc_name
         self.dialogue_box = pygame.image.load("../data/dialog/Dialog_Box.png").convert_alpha()
-        self.box_npc_name = pygame.transform.scale_by(pygame.image.load("../data/dialog/name_speaker.png").convert_alpha(), 2)
+        self.box_npc_name = pygame.transform.scale_by(
+            pygame.image.load("../data/dialog/name_speaker.png").convert_alpha(), 2)
         self.font = pygame.font.Font("../data/dialog/Roboto-Regular.ttf", 28)
         self.talking = True
         self.line_index = 0
@@ -127,9 +128,10 @@ class Dialog:
             for i in range(len(self.texts[self.text_index])):
                 self.letter_index[i] = 0
 
-    def draw(self, screen, dt, draw_npc_name=True):
+    def draw(self, screen, dt, draw_npc_name=True, height=0):
         if self.texts is not None:
-            screen.blit(self.dialogue_box, (0, screen.get_height() - self.dialogue_box.get_height() - 16))
+            if height == 0:
+                screen.blit(self.dialogue_box, (0, screen.get_height() - self.dialogue_box.get_height() - 16))
             if self.npc_name is not None and draw_npc_name:
                 screen.blit(self.box_npc_name, (screen.get_width() - self.box_npc_name.get_width(),
                                                 screen.get_height() - self.dialogue_box.get_height() - self.box_npc_name.get_height() - 32))
@@ -143,7 +145,7 @@ class Dialog:
             for i in range(len(text)):
                 screen.blit(text[i], (
                     200,
-                    screen.get_height() - self.dialogue_box.get_height() + 16 + i * 32 - self.animationup_text_index))
+                    screen.get_height() - self.dialogue_box.get_height() + 16 + i * 32 - self.animationup_text_index - height))
             if self.line_index == 3:
                 try:
                     if self.texts[self.text_index][self.line_index] != "":
@@ -178,7 +180,8 @@ class Dialog:
                             self.enddraw = True
             except KeyError:
                 self.enddraw = True
-            screen.blit(self.surface, (200, screen.get_height() - self.dialogue_box.get_height() - 16))
+            if height == 0:
+                screen.blit(self.surface, (200, screen.get_height() - self.dialogue_box.get_height() - 16))
 
     def update(self, screen):
         self.draw(screen, 1)

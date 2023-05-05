@@ -1,12 +1,13 @@
-import pygame
 import copy
 import datetime
-import time
 import random
+import time
 
+import pygame
+
+from inventory import Inventory
 from keylistener import KeyListener
 from mixer import Mixer
-from inventory import Inventory
 from pokemon import Pokemon
 
 
@@ -15,10 +16,10 @@ class Entity(pygame.sprite.Sprite):
         super().__init__()
         self.change_rect = False
         self.name = name
-        self.sprite = pygame.image.load(f"../data/sprite/{gender}/{name}.png")
+        self.sprite = pygame.image.load(f"../data/sprite/{gender}/{name}.png").convert_alpha()
         self.sprite_allimg = self.change_image(self.sprite)
         self.allimg = self.sprite_allimg
-        self.image = self.allimg["down"][0]
+        self.image = self.allimg["down"][0].convert_alpha()
         self.rect = self.image.get_rect()
         self.position = [float(x), float(y)]
         self.type = None
@@ -246,7 +247,9 @@ class Player(Entity):
                 if self.move("up", collisions, dt) and followentity is not None:
                     grouphigh = self.movefollowentity("up", followentity, collisions, dt)
                 else:
-                    self.checkbump()
+                    rect.y += 16
+                    if rect.collidelist(collisions) > -1:
+                        self.checkbump()
             elif keylistener.key_pressed(pygame.K_s):
                 self.direction = "down"
                 rect = copy.copy(self.hitbox)
@@ -255,7 +258,9 @@ class Player(Entity):
                 if self.move("down", collisions, dt) and followentity is not None:
                     grouphigh = self.movefollowentity("down", followentity, collisions, dt)
                 else:
-                    self.checkbump()
+                    rect.y -= 16
+                    if rect.collidelist(collisions) > -1:
+                        self.checkbump()
             elif keylistener.key_pressed(pygame.K_q):
                 self.direction = "left"
                 rect = copy.copy(self.hitbox)
@@ -264,7 +269,9 @@ class Player(Entity):
                 if self.move("left", collisions, dt) and followentity is not None:
                     grouphigh = self.movefollowentity("left", followentity, collisions, dt)
                 else:
-                    self.checkbump()
+                    rect.x += 16
+                    if rect.collidelist(collisions) > -1:
+                        self.checkbump()
             elif keylistener.key_pressed(pygame.K_d):
                 self.direction = "right"
                 rect = copy.copy(self.hitbox)
@@ -273,7 +280,9 @@ class Player(Entity):
                 if self.move("right", collisions, dt) and followentity is not None:
                     grouphigh = self.movefollowentity("right", followentity, collisions, dt)
                 else:
-                    self.checkbump()
+                    rect.x -= 16
+                    if rect.collidelist(collisions) > -1:
+                        self.checkbump()
             if len(keylistener.get()) == 0:
                 if self.animation_i >= 4:
                     self.animation_i = 0
@@ -359,9 +368,11 @@ class Player(Entity):
                 followentity.move("left", collisions, dt)
         return grouphigher
 
+
 class NPC(Entity):
     def __init__(self, x, y, name):
         super().__init__(x, y, name)
+
 
 class WildPoke(Pokemon, Entity):
     def __init__(self, x, y, data, level: int, area: list[pygame.Rect]):
@@ -411,4 +422,3 @@ class WildPoke(Pokemon, Entity):
                 if rect.collidelist(self.area) > 0:
                     self.move("right", [], dt)
             self.walk -= 1
-

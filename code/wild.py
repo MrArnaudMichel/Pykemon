@@ -1,7 +1,10 @@
-from sql import SQL
-import pygame
 import json
 import random
+
+import pygame
+
+from sql import SQL
+
 
 class Wild:
     def __init__(self):

@@ -15,7 +15,6 @@ class Inventory:
                 return
         self.items[item] = quantity
 
-
     def removeItem(self, item: Item, quantity: int = 1):
         for key in self.items.keys():
             if key.name == item.name:

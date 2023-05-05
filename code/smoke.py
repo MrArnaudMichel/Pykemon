@@ -1,6 +1,6 @@
-import pygame
-import pytmx
 import random
+
+import pygame
 
 
 class Smoke:
@@ -33,8 +33,8 @@ class Smoke:
     def draw(self, maplayeroffset):
         for i in range(len(self.listsmoke)):
             self.screen.blit(self.smoke[self.pos_smoke[i]][self.i], (
-            (self.listsmoke[i][0] + maplayeroffset[0]) * self.maplayerzoom + self.decale_x[self.pos_smoke[i]],
-            (self.listsmoke[i][1] + maplayeroffset[1]) * self.maplayerzoom))
+                (self.listsmoke[i][0] + maplayeroffset[0]) * self.maplayerzoom + self.decale_x[self.pos_smoke[i]],
+                (self.listsmoke[i][1] + maplayeroffset[1]) * self.maplayerzoom))
         if self.cooldown % 10 == 0:
             self.i += 1
             if self.i >= 30:

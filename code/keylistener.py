@@ -6,6 +6,7 @@ class KeyListener:
         if key in self.pressed:
             return True
         return False
+
     def addkey(self, key):
         self.pressed.append(key)
 

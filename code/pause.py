@@ -1,23 +1,26 @@
-import os
-
-import pygame
 import datetime
-import pathlib
-import dialog
-import PIL.Image
-import PIL.ImageGrab
-import PIL.ImageFilter
+import os
 import sys
-import save
 
-from sql import SQL
+import PIL.Image
+import PIL.ImageFilter
+import PIL.ImageGrab
+import pygame
+
+import dialog
+import save
 from entity import Player
+from sql import SQL
+
 
 def blur(image):
     image = image.filter(PIL.ImageFilter.GaussianBlur(radius=5))
     return image
+
+
 def pilImgToPygameImg(pilImg) -> pygame.Surface:
     return pygame.image.fromstring(pilImg.tobytes(), pilImg.size, pilImg.mode).convert_alpha()
+
 
 class Pause:
     def __init__(self, screen: pygame.Surface, player: Player):
@@ -44,18 +47,19 @@ class Pause:
         self.imagefontblur = pilImgToPygameImg(self.imagefontblur)
 
         self.image_map = pygame.transform.scale_by(pygame.image.load("../data/UI/worldmap/worldmaps/world_map_2.png"),
-                                                   4)
+                                                   4).convert_alpha()
         self.map_decale_x = 0
         self.map_decale_y = 0
 
-        self.nodata = pygame.transform.scale(pygame.image.load("../data/image/settings/nodata.png"), (128, 128))
+        self.nodata = pygame.transform.scale(pygame.image.load("../data/image/settings/nodata.png"),
+                                             (128, 128)).convert_alpha()
 
         self.cardUnselected = pygame.transform.scale(pygame.image.load("../data/image/settings/cardUnselected.png"),
-                                                     (self.screen.get_width() / 3, 42))
+                                                     (self.screen.get_width() / 3, 42)).convert_alpha()
         self.cardUnselectedoption = pygame.transform.scale(
-            pygame.image.load("../data/image/settings/cardUnselected.png"), (1280, 48))
+            pygame.image.load("../data/image/settings/cardUnselected.png"), (1280, 48)).convert_alpha()
         self.cardselectedoption = pygame.transform.scale_by(
-            pygame.image.load("../data/image/settings/cardUnselected.png"), 2)
+            pygame.image.load("../data/image/settings/cardUnselected.png"), 2).convert_alpha()
 
         self.pos_mouse_before = None
         self.save = False
@@ -66,20 +70,29 @@ class Pause:
         else:
             self.list_info = ["", "", "", "", "", "", ""]
 
-        self.lucas = pygame.transform.scale_by(pygame.image.load("../data/image/settings/lucas.png"), 0.35)
-        self.aurore = pygame.transform.scale_by(pygame.image.load("../data/image/settings/dawn.png"), 0.35)
+        self.lucas = pygame.transform.scale_by(pygame.image.load("../data/image/settings/lucas.png"),
+                                               0.35).convert_alpha()
+        self.aurore = pygame.transform.scale_by(pygame.image.load("../data/image/settings/dawn.png"),
+                                                0.35).convert_alpha()
 
         self.sql = SQL()
 
         self.image_pause: dict[str:pygame.Surface] = {
-            "quit": pygame.transform.scale(pygame.image.load("../data/image/settings/quit.png"), (64, 64)),
-            "save": pygame.transform.scale(pygame.image.load("../data/image/settings/save.png"), (64, 64)),
-            "inventory": pygame.transform.scale(pygame.image.load("../data/image/settings/inventory.png"),
-                                                (64, 64)),
-            "map": pygame.transform.scale(pygame.image.load("../data/image/settings/map.png"), (64, 64)),
-            "pokemon": pygame.transform.scale(pygame.image.load("../data/image/settings/pokemon.png"), (64, 64)),
-            "option": pygame.transform.scale(pygame.image.load("../data/image/settings/option.png"), (64, 64)),
-            "pokedex": pygame.transform.scale(pygame.image.load("../data/image/settings/pokedex.png"), (64, 64)), }
+            "quit": pygame.transform.scale(pygame.image.load("../data/image/settings/quit.png"),
+                                           (64, 64)).convert_alpha(),
+            "save": pygame.transform.scale(pygame.image.load("../data/image/settings/save.png"),
+                                           (64, 64)).convert_alpha(),
+            "inventory": pygame.transform.scale(
+                pygame.image.load("../data/image/settings/inventory.png").convert_alpha(),
+                (64, 64)),
+            "map": pygame.transform.scale(pygame.image.load("../data/image/settings/map.png"),
+                                          (64, 64)).convert_alpha(),
+            "pokemon": pygame.transform.scale(pygame.image.load("../data/image/settings/pokemon.png"),
+                                              (64, 64)).convert_alpha(),
+            "option": pygame.transform.scale(pygame.image.load("../data/image/settings/option.png"),
+                                             (64, 64)).convert_alpha(),
+            "pokedex": pygame.transform.scale(pygame.image.load("../data/image/settings/pokedex.png"),
+                                              (64, 64)).convert_alpha()}
 
     def update_font(self):
         pygame.image.save(self.screen, "../data/image/settings/screenshot.png")
@@ -181,9 +194,10 @@ class Pause:
                                      (self.screen.get_width() / 2 - (nb_image_pause * 128) / 2 + (128 * i) + 32, 16))
 
                 text, pos = dialog.setText(key.title(),
-                                         self.screen.get_width() / 2 - (nb_image_pause * 128) / 2 + (128 * i) + 64, 100,
-                                         26,
-                                         color, "center", font="Roboto-Light")
+                                           self.screen.get_width() / 2 - (nb_image_pause * 128) / 2 + (128 * i) + 64,
+                                           100,
+                                           26,
+                                           color, "center", font="Roboto-Light")
                 self.screen.blit(text, pos)
                 i += 1
 
@@ -263,6 +277,7 @@ class Pause:
                                            24,
                                            (106, 176, 126), "left", font="Roboto-Light")
                 self.screen.blit(text, pos)
+
     def draw_map(self):
         self.screen.blit(self.image_map, (0 + self.map_decale_x, 128 + self.map_decale_y))
 
