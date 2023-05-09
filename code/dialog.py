@@ -1,3 +1,5 @@
+import copy
+
 import pygame
 
 from mixer import Mixer
@@ -85,6 +87,7 @@ def split_text(text, player="", length=120):
 class Dialog:
     def __init__(self, text: str = "", player_name=None, npc_name: str = None):
         self.texts = split_text(text, player_name) if text != "" else None
+        self.textscopy = copy.deepcopy(self.texts)
         self.npc_name = npc_name
         self.dialogue_box = pygame.image.load("../data/dialog/Dialog_Box.png").convert_alpha()
         self.box_npc_name = pygame.transform.scale_by(
@@ -133,12 +136,25 @@ class Dialog:
             if height == 0:
                 screen.blit(self.dialogue_box, (0, screen.get_height() - self.dialogue_box.get_height() - 16))
             if self.npc_name is not None and draw_npc_name:
-                screen.blit(self.box_npc_name, (screen.get_width() - self.box_npc_name.get_width(),
-                                                screen.get_height() - self.dialogue_box.get_height() - self.box_npc_name.get_height() - 32))
-                text, pos = setText(self.npc_name, screen.get_width() - self.box_npc_name.get_width() / 2,
-                                    screen.get_height() - self.dialogue_box.get_height() - 32 - self.box_npc_name.get_height() / 2,
-                                    28, (247, 249, 249), "center")
-                screen.blit(text, pos)
+                if self.textscopy[self.text_index][0][1:7] == "player":
+                    if self.texts[self.text_index][0][0] == "<":
+                        self.texts[self.text_index][0] = self.texts[self.text_index][0][8:]
+                    screen.blit(self.box_npc_name, (
+                    0, screen.get_height() - self.dialogue_box.get_height() - self.box_npc_name.get_height() - 32))
+                    text, pos = setText(self.player_name, self.box_npc_name.get_width() / 2,
+                                        screen.get_height() - self.dialogue_box.get_height() - 32 - self.box_npc_name.get_height() / 2,
+                                        28, (247, 249, 249), "center")
+                    screen.blit(text, pos)
+                else:
+                    if self.texts[self.text_index][0][0] == "<":
+                        self.texts[self.text_index][0] = self.texts[self.text_index][0][8:]
+                    screen.blit(self.box_npc_name, (screen.get_width() - self.box_npc_name.get_width(),
+                                                    screen.get_height() - self.dialogue_box.get_height() - self.box_npc_name.get_height() - 32))
+                    text, pos = setText(self.npc_name, screen.get_width() - self.box_npc_name.get_width() / 2,
+                                        screen.get_height() - self.dialogue_box.get_height() - 32 - self.box_npc_name.get_height() / 2,
+                                        28, (247, 249, 249), "center")
+                    screen.blit(text, pos)
+
             text = {}
             for i in range(len(self.letter_index)):
                 text[i] = self.font.render(self.texts[self.text_index][i][:self.letter_index[i]], True, (247, 249, 249))

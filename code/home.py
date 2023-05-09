@@ -42,7 +42,6 @@ class Home:
             self.decale += 10
             if self.decale >= 1080:
                 self.decaleBool = False
-                # if the folder ../data/save countain a file in .json format
                 if self.pklInFolder():
                     self.activate = False
                 else:

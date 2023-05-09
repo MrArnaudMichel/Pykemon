@@ -46,6 +46,10 @@ class Entity(pygame.sprite.Sprite):
         self.updateinstante = False
         self.hitbox_bump = pygame.Rect(0, 0, 16, 16)
 
+    def setRectbyHitbox(self):
+        self.rect.x = self.hitbox.x + self.hitbox.width / 2 - self.rect.width / 2
+        self.rect.y = self.hitbox.y + self.hitbox.height / 2 - self.rect.height / 2
+
     def change_image(self, sprite: pygame.Surface):
         return {
             "down": [sprite.subsurface(0, 0, sprite.get_width() / 4, sprite.get_height() / 4),
@@ -186,7 +190,7 @@ class Entity(pygame.sprite.Sprite):
         if self.swim:
             pass
         self.lastposition = self.rect.copy()
-        if self.type != "player":
+        if self.type != "player" and self.type != "npc":
             if self.step == 0:
                 self.change_animation(self.direction, dt, self.allimg)
 
@@ -230,7 +234,7 @@ class Player(Entity):
         self.mixer.load_sound("bump", "../data/sound/effects/bump.mp3")
         self.timeplayed = datetime.timedelta()
         self.type = "player"
-        self.pokemon = []
+        self.pokemon: list[Pokemon] = []
         self.pokedollars = 0
         self.inventory: Inventory = Inventory()
         self.badges = []
@@ -370,8 +374,12 @@ class Player(Entity):
 
 
 class NPC(Entity):
-    def __init__(self, x, y, name):
+    def __init__(self, x, y, name, dialogue=None, quest=None):
         super().__init__(x, y, name)
+        self.type = "npc"
+        self.dialogue = dialogue
+        self.quest = quest
+        self.realname = None
 
 
 class WildPoke(Pokemon, Entity):

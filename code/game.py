@@ -11,7 +11,7 @@ import pytmx
 
 import save
 from dialog import Dialog
-from entity import Entity, Player, WildPoke
+from entity import Entity, Player, WildPoke, NPC
 from home import Home
 from introduction import Introduction
 from item import Item
@@ -24,6 +24,7 @@ from save import Save
 from smoke import Smoke
 from sql import SQL
 from wild import Wild
+from pokemon import Pokemon
 
 
 class Game:
@@ -73,6 +74,24 @@ class Game:
         self.mixer.load_music("rosa_title", False)
         self.mixer.play_music(True)
 
+    def setFollowEntity(self, entity: Entity = None):
+        if entity is None:
+            character_pass = str(self.player.pokemon[0].id)
+            while len(character_pass) < 3:
+                character_pass = "0" + character_pass
+            character_pass += "_0"
+            self.followEntity = Entity(self.player.rect.x, self.player.rect.y, character_pass)
+            if self.map.split("_")[0] == "map":
+                self.placefollowEntity()
+        else:
+            self.followEntity = entity
+
+    def placefollowEntity(self):
+        self.player.updateRect(True)
+        self.followEntity.hitbox = self.player.hitbox.copy()
+        self.followEntity.setRectbyHitbox()
+        self.followEntity.updateRect(True)
+
     def set_adventure(self):
         if os.listdir("../data/save/"):
             saveinfo = save.load_list(os.listdir("../data/save/")[0])
@@ -91,6 +110,8 @@ class Game:
             self.pokedex = saveinfo[8]["pokedex"]
             self.mixer.load_music(self.sql.select_where("map", "name", self.current_map)[0][0], False)
             self.mixer.play_music(True)
+            self.player.pokemon.append(self.setPoke("charizard", 5))
+            self.setFollowEntity()
         else:
             self.introduction = Introduction(self.screen)
             self.mixer.load_music("Introduction", False)
@@ -153,7 +174,7 @@ class Game:
         self.group.add(self.player)
         self.player.updateRect(True)
         if self.followEntity and filename.split("_")[0] == "map":
-            self.followEntityUpdatePos()
+            self.placefollowEntity()
             self.group.add(self.followEntity)
             self.group.change_layer(self.followEntity, 6)
 
@@ -177,6 +198,14 @@ class Game:
                 self.objects[obj.name] = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
             elif obj.type == 'wild_fight':
                 self.wildzone.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
+            elif obj.type == 'npc':
+                info = obj.name.split(" ")
+                npc = NPC(obj.x, obj.y, info[0])
+                self.group.add(npc)
+                npc.quest = self.sql.select_where("interaction_npc", "id", info[1])[0][1]
+                npc.dialogue = self.sql.select_where("interaction_npc", "id", info[1])[0][2]
+                npc.realname = self.sql.select_where("interaction_npc", "id", info[1])[0][3]
+                npc.updateRect(True)
 
         listepoke = self.wild.run(self.map, self.wildzone)
         if listepoke:
@@ -207,7 +236,7 @@ class Game:
             return WildPoke(wildPoke[0], wildPoke[1], json.loads(open(f"../data/json/pokemon/{name}.json").read()),
                             level, self.wildzone)
         else:
-            return Poke(json.loads(open(f"../data/json/pokemon/{name}.json").read()), level)
+            return Pokemon(json.loads(open(f"../data/json/pokemon/{name}.json").read()), level)
 
     def followEntityUpdatePos(self):
         if self.followEntity is not None:
@@ -230,7 +259,25 @@ class Game:
                 else:
                     self.mixer.load_sound("find_item", "../data/sound/effects/find_item.ogg")
                     self.mixer.sounds["find_item"].play()
-                break
+                return
+        npc = self.check_npc()
+        if npc:
+            self.dialog = Dialog(self.sql.select_where("dialog", "id", npc.dialogue)[0][1], self.player.name, npc.realname)
+
+    def check_npc(self):
+        for npc in self.group.sprites():
+            if npc.type == "npc":
+                rect = self.player.hitbox.copy()
+                if self.player.direction == "up":
+                    rect.y -= 16
+                elif self.player.direction == "down":
+                    rect.y += 16
+                elif self.player.direction == "left":
+                    rect.x -= 16
+                elif self.player.direction == "right":
+                    rect.x += 16
+                if rect.colliderect(npc.hitbox):
+                    return npc
 
     def update(self):
         group = self.player.movefromkeylistener(self.keylistener, self.collisions, self.swimcollision, self.dt,
@@ -245,7 +292,7 @@ class Game:
         else:
             if self.player.swim is False and self.player.anim_swim_bool is False and self.map.split("_")[
                 0] == "map" and self.followEntity is not None:
-                self.followEntityUpdatePos()
+                self.placefollowEntity()
                 self.group.add(self.followEntity)
 
         self.group.update(self.dt)
@@ -329,7 +376,7 @@ class Game:
             #                                           self.player.hitbox.width * self.map_layer.zoom,
             #                                           self.player.hitbox.height * self.map_layer.zoom))
             if self.dialog and self.dialog.talking:
-                self.dialog.draw(self.screen, 1)
+                self.dialog.draw(self.screen, 1, True)
             self.click = None
             if self.draw_word_image:
                 self.screen.blit(self.word_image, (0, 0))

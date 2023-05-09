@@ -136,7 +136,7 @@
    <point/>
   </object>
   <object id="19" type="collision" x="32" y="112" width="32" height="32"/>
-  <object id="21" name="maman_hgss quests [] 4" type="npc" x="89" y="97.3333">
+  <object id="21" name="maman_hgss 1" type="npc" x="96" y="96">
    <point/>
   </object>
  </objectgroup>

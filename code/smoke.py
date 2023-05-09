@@ -10,7 +10,7 @@ class Smoke:
         self.decale_x = [10, 5, 14, 7, 2]
         self.listsmoke = listsmoke
         self.smoke_strip = [pygame.transform.scale_by(
-            pygame.image.load("../data/image/Chimney Smoke/chimneysmoke_0" + str(i) + "_strip30.png"),
+            pygame.image.load("../data/image/Chimney Smoke/chimneysmoke_0" + str(i) + "_strip30.png").convert_alpha(),
             int(maplayerzoom)).convert_alpha() for i in range(1, 6)]
         self.pos_smoke = {}
         self.smoke = []
