@@ -36,6 +36,8 @@ class Home:
             self.index += 1
 
         if pygame.mouse.get_pressed()[0] and self.decale < 1080:
+            if self.pklInFolder():
+                self.activate = False
             self.decaleBool = True
         self.screen.blit(self.surface, (0, 1080 - self.decale))
         if self.decaleBool:
