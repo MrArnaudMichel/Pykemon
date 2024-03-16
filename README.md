@@ -54,9 +54,9 @@ This Project Does Not Have A License.
 If you have any questions, you can contact me at the following email address: <a> arnaudd.michel@gmail.com </a>
 
 ## Screenshots
-![Screenshot 1](https://media.discordapp.net/attachments/820340493774356493/1101275013216227418/item.png?width=1170&height=658)
-![Screenshot 2](https://media.discordapp.net/attachments/820340493774356493/1101275013719535737/save.png?width=1170&height=658)
-![Screenshot 3](https://media.discordapp.net/attachments/820340493774356493/1101275014017318953/view.png?width=1170&height=658)
+![Screenshot 1](images/Capture d’écran du 2024-03-16 16-52-18.png)
+![Screenshot 2](images/Capture d’écran du 2024-03-16 16-52-28.png)
+![Screenshot 3](images/Capture d’écran du 2024-03-16 16-51-02.png)
 
 ## Links
 - [Repository](https://github.com/MrArnaudMichel/Pykemon)
