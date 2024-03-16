@@ -1,0 +1,4 @@
+pillow==10.2.0
+pygame==2.5.2
+pyscroll==2.31
+PyTMX==3.32
