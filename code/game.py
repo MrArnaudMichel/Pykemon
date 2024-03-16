@@ -20,11 +20,11 @@ from mixer import Mixer
 from night import Night
 from pause import Pause
 from pokedex import Pokedex
+from pokemon import Pokemon
 from save import Save
 from smoke import Smoke
 from sql import SQL
 from wild import Wild
-from pokemon import Pokemon
 
 
 class Game:
@@ -202,6 +202,7 @@ class Game:
                 info = obj.name.split(" ")
                 npc = NPC(obj.x, obj.y, info[0])
                 self.group.add(npc)
+                print(info[1])
                 npc.quest = self.sql.select_where("interaction_npc", "id", info[1])[0][1]
                 npc.dialogue = self.sql.select_where("interaction_npc", "id", info[1])[0][2]
                 npc.realname = self.sql.select_where("interaction_npc", "id", info[1])[0][3]
@@ -262,7 +263,8 @@ class Game:
                 return
         npc = self.check_npc()
         if npc:
-            self.dialog = Dialog(self.sql.select_where("dialog", "id", npc.dialogue)[0][1], self.player.name, npc.realname)
+            self.dialog = Dialog(self.sql.select_where("dialog", "id", npc.dialogue)[0][1], self.player.name,
+                                 npc.realname)
 
     def check_npc(self):
         for npc in self.group.sprites():

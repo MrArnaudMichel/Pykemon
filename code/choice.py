@@ -51,5 +51,3 @@ class Choice:
                                             self.screen.get_height() - self.choice_box.get_height() - 180 - 112))
         self.screen.blit(self.textchoice2, (self.screen.get_width() - self.choice_box.get_width() + 32,
                                             self.screen.get_height() - self.choice_box.get_height() - 180 - 80))
-        pygame.draw.rect(self.screen, (255, 255, 255), self.choice1_rect, 1)
-        pygame.draw.rect(self.screen, (255, 255, 255), self.choice2_rect, 1)

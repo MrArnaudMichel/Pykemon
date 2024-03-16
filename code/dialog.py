@@ -140,7 +140,7 @@ class Dialog:
                     if self.texts[self.text_index][0][0] == "<":
                         self.texts[self.text_index][0] = self.texts[self.text_index][0][8:]
                     screen.blit(self.box_npc_name, (
-                    0, screen.get_height() - self.dialogue_box.get_height() - self.box_npc_name.get_height() - 32))
+                        0, screen.get_height() - self.dialogue_box.get_height() - self.box_npc_name.get_height() - 32))
                     text, pos = setText(self.player_name, self.box_npc_name.get_width() / 2,
                                         screen.get_height() - self.dialogue_box.get_height() - 32 - self.box_npc_name.get_height() / 2,
                                         28, (247, 249, 249), "center")
